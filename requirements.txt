@@ -1,0 +1,13 @@
+# Kern
+alpaca-py==0.20.0
+pandas==2.3.2
+numpy==2.3.2
+requests==2.32.3
+pytz==2025.2
+tzdata==2025.2
+
+# News-Quelle (kostenlos)
+yfinance==0.2.54
+
+# Leichtes Sentiment (ohne schweres Modell)
+vaderSentiment==3.3.2
