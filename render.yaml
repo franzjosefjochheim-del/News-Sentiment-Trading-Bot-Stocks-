@@ -1,0 +1,38 @@
+services:
+  - type: worker
+    name: news-sentiment-bot
+    env: python
+    plan: starter  # (geht auch auf free/starter; für 24/7 ist starter stabiler)
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python news_sentiment_bot.py --loop"
+    envVars:
+      - key: APCA_API_KEY_ID
+        sync: false
+      - key: APCA_API_SECRET_KEY
+        sync: false
+      - key: APCA_API_BASE_URL
+        value: https://paper-api.alpaca.markets
+      - key: APCA_API_DATA_FEED
+        value: iex
+      - key: WATCHLIST
+        value: AAPL,MSFT,NVDA,TSLA,AMZN
+      - key: RISK_USD_PER_TRADE
+        value: "200"          # pro Trade eingesetzter USD-Betrag (wird als notional genutzt)
+      - key: TP_PCT
+        value: "0.02"         # 2% Take Profit
+      - key: SL_PCT
+        value: "0.01"         # 1% Stop Loss
+      - key: PRICE_SPIKE_PCT_5M
+        value: "2.0"          # Trigger: Kursänderung in 5 Min > 2% → News abrufen
+      - key: NEWS_POS_TH
+        value: "0.40"         # VADER-Compound > 0.40 ⇒ positiv (LONG)
+      - key: NEWS_NEG_TH
+        value: "-0.40"        # VADER-Compound < -0.40 ⇒ negativ (SHORT, falls erlaubt)
+      - key: COOLDOWN_MIN
+        value: "30"           # gleiche Aktie nach Trade X Minuten pausieren
+      - key: POLLING_SECONDS
+        value: "60"           # Loop-Intervall
+      - key: ALLOW_SHORT
+        value: "false"        # "true" falls du Shorten möchtest (Margin nötig)
+      - key: EXTENDED_HOURS
+        value: "false"        # nur während regulärer Marktzeiten handeln
